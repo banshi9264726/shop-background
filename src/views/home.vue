@@ -8,13 +8,13 @@
           </div></el-col>
           <el-col :span="16"><div class="grid-content bg-purple-dark title">商城后台管理系统</div></el-col>
           <el-col :span="4"><div class="grid-content bg-purple-dark loginout">
-              <a href="">退出</a>
+              <a href="" @click.prevent="handleLogout">退出</a>
             </div></el-col>
       </el-row>
     </el-header>
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
+      <el-aside width="200px" class="aside">
         <el-menu
           :unique-opened="true"
           :router="true"
@@ -25,7 +25,7 @@
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
-            <el-menu-item index="2">
+            <el-menu-item index="users">
               <i class="el-icon-menu"></i>
               <span slot="title">用户列表</span>
             </el-menu-item>
@@ -84,14 +84,42 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main></el-main>
+      <el-main
+        class="main">
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
 export default {
-
+  // 判断是否登录
+  beforeCreate () {
+    // 获取token
+    const token = sessionStorage.getItem('token')
+    // 判断是否有token
+    // 没有的话跳转到登录页面
+    if (!token) {
+      this.$router.push({
+        name: 'login'
+      })
+      this.$message.error('请先登录')
+    }
+  },
+  // 退出
+  methods: {
+    handleLogout () {
+      // 清除session
+      sessionStorage.removeItem('token')
+      // 跳转到登录页面
+      this.$router.push({
+        name: 'login'
+      })
+      // 提示
+      this.$message.success('退出成功')
+    }
+  }
 }
 </script>
 
@@ -116,5 +144,15 @@ export default {
   line-height: 60px;
   text-decoration: none;
   color: orangered;
+}
+.aside {
+  background-color: #d3dce6;
+}
+.aside .menu {
+  height: 100%;
+}
+.main {
+  height: 100%;
+  background-color: #e9eef3;
 }
 </style>
