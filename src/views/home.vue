@@ -7,12 +7,12 @@
             <img src="/static/logo.png" alt="">
           </div></el-col>
           <el-col :span="16"><div class="grid-content bg-purple-dark title">商城后台管理系统</div></el-col>
-          <el-col :span="4"><div class="grid-content bg-purple-dark loginout">
-              <a href="" @click.prevent="handleLogout">退出</a>
+          <el-col :span="4"><div class="grid-content bg-purple-dark">
+              <a href="" @click.prevent="handleLogout" class="logout">退出</a>
             </div></el-col>
       </el-row>
     </el-header>
-    <el-container>
+    <el-container class="container">
       <!-- 侧边栏 -->
       <el-aside width="200px" class="aside">
         <el-menu
@@ -123,27 +123,26 @@ export default {
 }
 </script>
 
-<style>
-.container{
-  width: 100%;
+<style scoped>
+.container {
+  height: 100%;
 }
-.container .header{
-  width: 100%;
-  height: 60px;
+.header {
   background-color: #b3c0d1;
+  padding: 0;
 }
-.container .header .title{
+.header .title {
   text-align: center;
-  font-size: 24px;
   line-height: 60px;
-  color: #fff
+  font-size: 24px;
+  color: #fff;
 }
-.container .header .loginout a{
+.header .logout {
   position: absolute;
-  right: 15px;
+  right: 10px;
+  color: orange;
   line-height: 60px;
   text-decoration: none;
-  color: orangered;
 }
 .aside {
   background-color: #d3dce6;
