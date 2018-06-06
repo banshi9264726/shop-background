@@ -9,7 +9,7 @@
         <el-input v-model="form.password" type="password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button class="login-btn" type="success" @click="handelLogin">登录</el-button>
+        <el-button class="login-btn" type="primary" @click="handelLogin">登录</el-button>
       </el-form-item>
   </el-form>
 </div>
