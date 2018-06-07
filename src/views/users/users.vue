@@ -65,7 +65,8 @@
           <el-button
             size="mini"
             type="danger"
-            icon="el-icon-delete"></el-button>
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row.id)"></el-button>
             <el-button
             size="mini"
             type="success"
@@ -213,6 +214,29 @@ export default {
           this.$message.error(data.meta.msg)
         }
       })
+    },
+    // 删除
+    async handleDelete (id) {
+      // 提示用户是否删除
+      this.$confirm('是否确定删除该用户', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          // 发送请求
+          const { data } = await this.$http.delete(`users/${id}`)
+          if (data.meta.status === 200) {
+            // 提示用户删除成功
+            this.$message.success('删除成功')
+            // 当前页码为1
+            this.pagenum = 1
+            // 重新渲染数据
+            this.loadData()
+          } else {
+            this.$message.error(data.meta.msg)
+          }
+        })
     }
   }
 }
