@@ -147,6 +147,32 @@
       <el-button type="primary" @click="handleUpdate">确 定</el-button>
     </div>
   </el-dialog>
+
+  <!-- 分配角色对话框 -->
+  <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible">
+    <el-form
+      label-width="100px">
+      <el-form-item label="用户名">
+        {{selectedUser.username}}
+      </el-form-item>
+      <el-form-item label="请选择角色">
+        <el-select v-model="selectedUser.rid">
+          <el-option label = "请选择" :value = "-1">
+          </el-option>
+          <el-option
+            v-for="option in options"
+            :key="option.id"
+            :label="option.roleName"
+            :value="option.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+      <el-button type="primary">确 定</el-button>
+    </div>
+  </el-dialog>
 </el-card>
 </template>
 
@@ -184,7 +210,15 @@ export default {
         ]
       },
       // 控制编辑窗口显示隐藏
-      editUserDialogVisible: false
+      editUserDialogVisible: false,
+      // 分配角色
+      selectedUser: {
+        username: '',
+        rid: -1
+      },
+      // 控制分配角色
+      setRoleDialogVisible: false,
+      options: []
     }
   },
   // 组件加载完毕,可以访问data中的数据
@@ -194,7 +228,6 @@ export default {
   methods: {
     // 修改用户
     async handleUpdate () {
-
       const { data } = await this.$http.put(`users/${this.userFormData.id}`, {
         email: this.userFormData.email,
         mobile: this.userFormData.mobile
@@ -312,6 +345,16 @@ export default {
       } else {
         this.$message.error('获取数据失败')
       }
+    },
+    // 打开分配角色
+    async handleOpenSetRoleDialog (user) {
+      this.setRoleDialogVisible = true
+      this.selectedUser.username = user.username
+      const { data } = await this.$http.get('roles')
+      this.options = data.data
+      // 根据用户的id请求用户对象---获取角色id
+      const { data: data1 } = await this.$http.get(`users/${user.id}`)
+      this.selectedUser.rid = data1.data.rid
     }
   }
 }
