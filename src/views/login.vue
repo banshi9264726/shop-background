@@ -24,27 +24,27 @@ export default {
         username: '',
         password: ''
       }
-    }
+    };
   },
   methods: {
     async handelLogin () {
-      const res = await this.$http.post('login', this.form)
-      const data = res.data
+      const res = await this.$http.post('login', this.form);
+      const data = res.data;
       if (data.meta.status === 200) {
         // 登录成功
-        this.$message.success('登录成功')
+        this.$message.success('登录成功');
         // 保存token
-        sessionStorage.setItem('token', data.data.token)
+        sessionStorage.setItem('token', data.data.token);
         // 跳转到home页面
         this.$router.push({
           name: 'home'
-        })
+        });
       } else {
-        this.$message.error('登录失败')
+        this.$message.error('登录失败');
       }
     }
   }
-}
+};
 </script>
 
 <style>

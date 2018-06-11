@@ -46,18 +46,22 @@ export default {
   data () {
     return {
       tableData: []
-    }
+    };
   },
   created () {
-    this.loadData()
+    this.loadData();
   },
   methods: {
     async loadData () {
-      const {data} = await this.$http.get('rights/list')
-      this.tableData = data.data
+      const {data} = await this.$http.get('rights/list');
+      if (data.meta.status === 200) {
+        this.tableData = data.data;
+      } else {
+        this.$message.error(data.meta.msg);
+      }
     }
   }
-}
+};
 </script>
 
 <style scoped>
